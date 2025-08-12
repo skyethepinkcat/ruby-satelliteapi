@@ -3,7 +3,6 @@
 require 'json'
 require 'pp'
 require 'rest-client'
-require 'colorize'
 require 'socket'
 
 require_relative 'satelliteapi/version'
