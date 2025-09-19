@@ -5,10 +5,13 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in satelliteapi.gemspec
 gemspec
 
-gem 'irb'
-gem 'rake', '~> 13.0'
+group :production do
+  gem 'rake', '~> 13.0'
+  gem 'rest-client'
+end
 
-gem 'rspec', '~> 3.0'
-
-gem 'rest-client'
-gem 'rubocop', '~> 1.21'
+group :development do
+  gem 'irb'
+  gem 'rubocop'
+  gem 'ruby-lsp'
+end
