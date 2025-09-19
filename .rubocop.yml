@@ -1,10 +1,29 @@
 AllCops:
   TargetRubyVersion: 3.1
+  NewCops: enable
   Exclude:
-    - 'bin/console'
+  - 'bin/console'
+
+plugins:
+- rubocop-rake
+- rubocop-rspec
 
 Metrics/MethodLength:
-  CountAsOne: ['hash']
+  CountAsOne: [ 'hash' ]
 
 Style/AccessorGrouping:
   Enabled: false
+
+# RSpec configuration
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/MultipleExpectations:
+  Max: 6
+
+# Layout configuration
+Layout/LineLength:
+  Max: 130

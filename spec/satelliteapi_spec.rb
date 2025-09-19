@@ -4,7 +4,7 @@ require 'webmock/rspec'
 
 RSpec.describe Satelliteapi do
   it 'has a version number' do
-    expect(Satelliteapi::VERSION).not_to be nil
+    expect(Satelliteapi::VERSION).not_to be_nil
   end
 end
 
@@ -12,7 +12,7 @@ RSpec.describe SatelliteApi::Api do
   let(:instance_url) { 'https://satellite.example.com' }
   let(:username) { 'admin' }
   let(:password) { 'password' }
-  let(:api) { SatelliteApi::Api.new(instance_url, username, password) }
+  let(:api) { described_class.new(instance_url, username, password) }
 
   describe '#initialize' do
     it 'sets the instance variables correctly' do
@@ -21,16 +21,16 @@ RSpec.describe SatelliteApi::Api do
       expect(api.password).to eq(password)
       expect(api.api_url).to eq('/api')
       expect(api.katello_url).to eq('/katello/api')
-      expect(api.verbose).to eq(false)
+      expect(api.verbose).to be(false)
     end
 
     it 'allows setting verbose mode' do
-      verbose_api = SatelliteApi::Api.new(instance_url, username, password, verbose: true)
-      expect(verbose_api.verbose).to eq(true)
+      verbose_api = described_class.new(instance_url, username, password, verbose: true)
+      expect(verbose_api.verbose).to be(true)
     end
 
     it 'removes trailing slash from instance_url if present' do
-      api_with_slash = SatelliteApi::Api.new(instance_url + '/', username, password)
+      api_with_slash = described_class.new("#{instance_url}/", username, password)
       expect(api_with_slash.instance_url).to eq(instance_url)
     end
   end
