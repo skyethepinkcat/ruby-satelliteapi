@@ -8,4 +8,5 @@ require 'satelliteapi'
 # with your gem easier. You can also use a different console, if you like.
 
 require 'irb'
-IRB.start(__FILE__)
+api = SatelliteApi::Api.new(ENV['SAT_URL'], ENV['SAT_USERNAME'], ENV['ACCESS_TOKEN'], verbose: true)
+binding.irb
