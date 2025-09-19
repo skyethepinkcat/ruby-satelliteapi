@@ -22,11 +22,12 @@ module SatelliteApi
     #   certs). Set to something else to change SSL verification.
     # @rbs (String, String, String, verbose: ?Boolean) -> SatelliteApi
     def initialize(instance_url, username, password, verbose: false, verify_ssl: OpenSSL::SSL::VERIFY_NONE)
-      @instance_url = instance_url
+      # Ensure instance_url doesn't end with a trailing slash
+      @instance_url = instance_url.chomp('/')
       @username = username
       @password = password
       @api_url = '/api'
-      @katello_url = 'katello/api'
+      @katello_url = '/katello/api'
       @verbose = verbose
       @verify_ssl = verify_ssl
     end

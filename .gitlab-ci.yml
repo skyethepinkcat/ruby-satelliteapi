@@ -1,10 +1,62 @@
+stages:
+- lint
+- test
+- build
+
+# Use Podman-compatible container registry
 default:
-  image: ruby:3.4.5
+  image:
+    name: registry.fedoraproject.org/ruby:3.4
+    entrypoint: [ "" ]
 
-  before_script:
-    - gem install bundler -v 2.6.9
-    - bundle install
+variables:
+  BUNDLE_PATH: vendor/bundle
+  SIMPLECOV: 'true'
 
-example_job:
+# Cache dependencies between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - vendor/bundle
+
+before_script:
+- gem install bundler -v 2.6.9
+- bundle config set path "${BUNDLE_PATH}"
+- bundle install --jobs $(nproc) --retry 3
+
+# Lint the code with RuboCop
+lint:
+  stage: lint
   script:
-    - bundle exec rake
+  - bundle exec rubocop -v
+  - bundle exec rubocop --parallel
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# Run the test suite
+test:
+  stage: test
+  script:
+  - bundle exec rspec --format documentation
+  coverage: '/\(\d+.\d+\%\) covered/'
+  artifacts:
+    paths:
+    - coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/coverage.xml
+    expire_in: 1 week
+
+# Build the gem
+build:
+  stage: build
+  script:
+  - bundle exec rake build
+  artifacts:
+    paths:
+    - pkg/*.gem
+    expire_in: 1 week
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

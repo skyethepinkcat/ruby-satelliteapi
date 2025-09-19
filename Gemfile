@@ -15,3 +15,10 @@ group :development do
   gem 'rubocop'
   gem 'ruby-lsp'
 end
+
+group :test do
+  gem 'rspec'
+  gem 'simplecov'
+  gem 'simplecov-cobertura'
+  gem 'webmock'
+end
