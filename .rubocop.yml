@@ -1,8 +1,14 @@
+inherit_mode:
+  merge:
+  - Exclude
+
 AllCops:
   TargetRubyVersion: 3.1
   NewCops: enable
   Exclude:
   - 'bin/console'
+  - 'vendor/**/*'
+  - '.bundle/**/*'
 
 plugins:
 - rubocop-rake

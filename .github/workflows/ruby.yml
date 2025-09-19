@@ -23,7 +23,7 @@ jobs:
         ruby-version: '3.4'
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Lint with RuboCop
-      run: bundle exec rubocop --parallel
+      run: bundle exec rubocop --parallel lib spec Rakefile *.gemspec
 
   test:
     runs-on: ubuntu-latest
